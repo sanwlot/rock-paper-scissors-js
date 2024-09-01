@@ -29,4 +29,19 @@ body {
   border-radius: 50%;
   font-size: 5em;
   cursor: pointer;
+
+  width: 100px;
+  height: 100px;
+  text-align: center;
+}
+
+.message {
+  text-align: center;
+}
+
+.resetScoreBtn {
+  background-color: antiquewhite;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
 }
