@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #333;
+  color: white;
+  font-family: sans-serif;
+}
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  height: 100vh;
+}
+
+.emoji {
+  font-size: 5em;
+}
+
+.choice {
+  all: unset;
+  padding: 20px;
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+  font-size: 5em;
+  cursor: pointer;
+}

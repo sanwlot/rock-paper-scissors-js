@@ -1,53 +1,73 @@
-function getComputerChoice() {
-  const moves = ["rock", "paper", "scissors"]
-  return moves[Math.floor(Math.random() * moves.length)]
-}
+const choicesBtns = document.querySelectorAll(".choice")
+const humanScoreEl = document.querySelector(".humanScore")
+const computerScoreEl = document.querySelector(".computerScore")
+const tiesCountEl = document.querySelector(".tiesCount")
+const messageEl = document.querySelector(".message")
+const resetScoreBtn = document.querySelector(".resetScoreBtn")
 
-function getHumanChoice() {
-  let userChoice = prompt("choose one of the three: rock, paper or scissors ")
-  return userChoice.toLowerCase()
-}
-function playRound(humanChoice, computerChoice, humanScore, computerScore) {
-  if (humanChoice === computerChoice) {
-    console.log(`It's a tie! You both chose ${humanChoice}.`)
-  } else if (
-    (humanChoice === "scissors" && computerChoice === "paper") ||
-    (humanChoice === "paper" && computerChoice === "rock") ||
-    (humanChoice === "rock" && computerChoice === "scissors")
-  ) {
-    humanScore++
-    console.log(`You Win! ${humanChoice} beats ${computerChoice}.`)
-  } else {
-    computerScore++
-    console.log(`You Lose! ${computerChoice} beats ${humanChoice}.`)
-  }
+let humanScore = 0
+let computerScore = 0
+let tiesCount = 0
 
-  console.log(`Total Score: You: ${humanScore} Computer: ${computerScore}`)
-  return { humanScore, computerScore }
-}
+choicesBtns.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    humanScoreEl.textContent = humanScore
+    computerScoreEl.textContent = computerScore
+    tiesCountEl.textContent = tiesCount
+    function getHumanChoice() {
+      let userChoice = e.target.textContent
+      if (userChoice === "👊") return "rock"
+      if (userChoice === "👋") return "paper"
+      if (userChoice === "✌️") return "scissors"
+    }
+    function getComputerChoice() {
+      const moves = ["rock", "paper", "scissors"]
+      return moves[Math.floor(Math.random() * moves.length)]
+    }
+    function playGame() {
+      let humanChoice = getHumanChoice()
+      let computerChoice = getComputerChoice()
 
-function playGame() {
-  let humanScore = 0
-  let computerScore = 0
+      const emojies = {
+        rock: "👊",
+        paper: "👋",
+        scissors: "✌️",
+      }
 
-  for (let i = 0; i < 5; i++) {
-    let roundResult = playRound(
-      getHumanChoice(),
-      getComputerChoice(),
-      humanScore,
-      computerScore
-    )
-    humanScore = roundResult.humanScore
-    computerScore = roundResult.computerScore
-  }
+      if (humanChoice === computerChoice) {
+        tiesCount++
+        tiesCountEl.textContent = tiesCount
+        messageEl.innerHTML = `<div>
+          <p>You <span class="emoji">${emojies[humanChoice]}</span> <span class="emoji">${emojies[computerChoice]}</span> Computer</p>
+          <h2>It's a Tie!</h2>
+        </div>`
+      } else if (
+        (humanChoice === "scissors" && computerChoice === "paper") ||
+        (humanChoice === "paper" && computerChoice === "rock") ||
+        (humanChoice === "rock" && computerChoice === "scissors")
+      ) {
+        humanScore++
+        humanScoreEl.textContent = humanScore
+        messageEl.innerHTML = `<div>
+          <p>You <span class="emoji">${emojies[humanChoice]}</span> <span class="emoji">${emojies[computerChoice]}</span> Computer</p>
+          <h2>You Win!</h2>
+        </div>`
+      } else {
+        computerScore++
+        computerScoreEl.textContent = computerScore
+        messageEl.innerHTML = `<div>
+          <p>You <span class="emoji">${emojies[humanChoice]}</span> <span class="emoji">${emojies[computerChoice]}</span> Computer</p>
+          <h2>You Lose!</h2>
+        </div>`
+      }
+    }
+    playGame()
+  })
+})
 
-  if (humanScore > computerScore) {
-    console.log("You won the game, congratulations!")
-  } else if (computerScore > humanScore) {
-    console.log("You lost the game, better luck next time!")
-  } else {
-    console.log("The game was tied!")
-  }
-}
-
-playGame()
+resetScoreBtn.addEventListener("click", () => {
+  humanScore = computerScore = tiesCount = 0
+  humanScoreEl.textContent = 0
+  computerScoreEl.textContent = 0
+  tiesCountEl.textContent = 0
+})
