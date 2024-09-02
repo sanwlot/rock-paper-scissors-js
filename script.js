@@ -13,12 +13,31 @@ const resetSound = document.querySelector(".reset-sound")
 let humanScore = 0
 let computerScore = 0
 let tiesCount = 0
+const emojies = {
+  rock: "👊",
+  paper: "👋",
+  scissors: "✌️",
+}
+
+function updateScores() {
+  humanScoreEl.textContent = humanScore
+  computerScoreEl.textContent = computerScore
+  tiesCountEl.textContent = tiesCount
+}
+function displayResult(humanChoice, computerChoice, result, sound) {
+  sound.play()
+  messageEl.innerHTML = `<div>
+    <p>
+      You <span class="emoji">${emojies[humanChoice]}</span> 
+      <span class="emoji">${emojies[computerChoice]}</span> Computer
+    </p>
+    <h2>${result}</h2>
+  </div>`
+}
 
 choicesBtns.forEach((button) => {
   button.addEventListener("click", (e) => {
-    humanScoreEl.textContent = humanScore
-    computerScoreEl.textContent = computerScore
-    tiesCountEl.textContent = tiesCount
+    updateScores()
     clickSound.play()
     function getHumanChoice() {
       let userChoice = e.target.textContent
@@ -34,20 +53,10 @@ choicesBtns.forEach((button) => {
       let humanChoice = getHumanChoice()
       let computerChoice = getComputerChoice()
 
-      const emojies = {
-        rock: "👊",
-        paper: "👋",
-        scissors: "✌️",
-      }
-
       if (humanChoice === computerChoice) {
         tiesCount++
         tiesCountEl.textContent = tiesCount
-        tieSound.play()
-        messageEl.innerHTML = `<div>
-          <p>You <span class="emoji">${emojies[humanChoice]}</span> <span class="emoji">${emojies[computerChoice]}</span> Computer</p>
-          <h2>It's a Tie!</h2>
-        </div>`
+        displayResult(humanChoice, computerChoice, "It's a Tie", tieSound)
       } else if (
         (humanChoice === "scissors" && computerChoice === "paper") ||
         (humanChoice === "paper" && computerChoice === "rock") ||
@@ -55,19 +64,11 @@ choicesBtns.forEach((button) => {
       ) {
         humanScore++
         humanScoreEl.textContent = humanScore
-        winSound.play()
-        messageEl.innerHTML = `<div>
-          <p>You <span class="emoji">${emojies[humanChoice]}</span> <span class="emoji">${emojies[computerChoice]}</span> Computer</p>
-          <h2>You Win!</h2>
-        </div>`
+        displayResult(humanChoice, computerChoice, "You Win", winSound)
       } else {
         computerScore++
         computerScoreEl.textContent = computerScore
-        loseSound.play()
-        messageEl.innerHTML = `<div>
-          <p>You <span class="emoji">${emojies[humanChoice]}</span> <span class="emoji">${emojies[computerChoice]}</span> Computer</p>
-          <h2>You Lose!</h2>
-        </div>`
+        displayResult(humanChoice, computerChoice, "You Lose", loseSound)
       }
     }
     playGame()
@@ -76,8 +77,6 @@ choicesBtns.forEach((button) => {
 
 resetScoreBtn.addEventListener("click", () => {
   humanScore = computerScore = tiesCount = 0
-  humanScoreEl.textContent = 0
-  computerScoreEl.textContent = 0
-  tiesCountEl.textContent = 0
+  updateScores()
   resetSound.play()
 })
