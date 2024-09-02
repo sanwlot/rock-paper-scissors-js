@@ -45,8 +45,7 @@ function displayResult(humanChoice, computerChoice, result, sound) {
     <h2>${result}</h2>
   </div>`
 }
-function playGame(humanChoice) {
-  const computerChoice = getComputerChoice()
+function processGameResult(humanChoice, computerChoice) {
   if (humanChoice === computerChoice) {
     tiesCount++
     displayResult(humanChoice, computerChoice, "It's a Tie", tieSound)
@@ -61,6 +60,9 @@ function playGame(humanChoice) {
     computerScore++
     displayResult(humanChoice, computerChoice, "You Lose", loseSound)
   }
+}
+function playGame(humanChoice) {
+  processGameResult(humanChoice, getComputerChoice())
   updateScores()
 }
 
